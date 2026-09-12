@@ -12,7 +12,8 @@ let particles, fireflies, fallingPetalsMesh;
 let fallingPetalsData = [];
 let isBlooming = false;
 let bloomStart = 0;
-let soundEnabled = false;
+let soundEnabled = true; // Default sound enabled
+let audioStarted = false;
 
 const clock = new THREE.Clock();
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -83,6 +84,20 @@ function init() {
 
   window.addEventListener("resize", onWindowResize);
   window.addEventListener("pointermove", onPointerMove, { passive: true });
+
+  // Autoplay Trigger on First Interaction
+  const handleFirstInteraction = () => {
+    if (!audioStarted && soundEnabled) {
+      bgMusic.play().then(() => {
+        audioStarted = true;
+        soundBtn.textContent = "♫";
+        soundBtn.setAttribute("aria-pressed", "true");
+      }).catch(err => console.log("Autoplay blocked:", err));
+    }
+  };
+
+  window.addEventListener("click", handleFirstInteraction, { once: true });
+  window.addEventListener("touchstart", handleFirstInteraction, { once: true });
 
   document.getElementById("bloom-btn").addEventListener("click", startBloom);
   replayBtn.addEventListener("click", resetBloom);
@@ -224,7 +239,7 @@ function createFallingPetalsSystem() {
 function startBloom() {
   if (isBlooming) return;
 
-  if (soundEnabled) {
+  if (soundEnabled && bgMusic.paused) {
     bgMusic.play().catch(() => { });
   }
 
@@ -330,7 +345,7 @@ function toggleSound() {
   soundBtn.setAttribute("aria-pressed", String(soundEnabled));
   soundBtn.textContent = soundEnabled ? "♫" : "♩";
 
-  if (soundEnabled && isBlooming) {
+  if (soundEnabled) {
     bgMusic.play().catch(() => { });
   } else {
     bgMusic.pause();
