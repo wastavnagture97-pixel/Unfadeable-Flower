@@ -12,8 +12,7 @@ let particles, fireflies, fallingPetalsMesh;
 let fallingPetalsData = [];
 let isBlooming = false;
 let bloomStart = 0;
-let soundEnabled = true; // Default sound enabled
-let audioStarted = false;
+let soundEnabled = true;
 
 const clock = new THREE.Clock();
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -85,21 +84,25 @@ function init() {
   window.addEventListener("resize", onWindowResize);
   window.addEventListener("pointermove", onPointerMove, { passive: true });
 
-  // Autoplay Trigger on First Interaction
-  const handleFirstInteraction = () => {
-    if (!audioStarted && soundEnabled) {
+  // Autoplay Trigger on Interaction
+  const handleInteraction = () => {
+    if (bgMusic && bgMusic.paused && soundEnabled) {
+      bgMusic.muted = false;
       bgMusic.play().then(() => {
-        audioStarted = true;
         soundBtn.textContent = "♫";
         soundBtn.setAttribute("aria-pressed", "true");
-      }).catch(err => console.log("Autoplay blocked:", err));
+      }).catch(err => console.log("Audio play blocked:", err));
     }
   };
 
-  window.addEventListener("click", handleFirstInteraction, { once: true });
-  window.addEventListener("touchstart", handleFirstInteraction, { once: true });
+  document.addEventListener("click", handleInteraction, { once: true });
+  document.body.addEventListener("touchstart", handleInteraction, { once: true });
 
-  document.getElementById("bloom-btn").addEventListener("click", startBloom);
+  document.getElementById("bloom-btn").addEventListener("click", () => {
+    handleInteraction();
+    startBloom();
+  });
+
   replayBtn.addEventListener("click", resetBloom);
   soundBtn.addEventListener("click", toggleSound);
 
@@ -238,10 +241,6 @@ function createFallingPetalsSystem() {
 
 function startBloom() {
   if (isBlooming) return;
-
-  if (soundEnabled && bgMusic.paused) {
-    bgMusic.play().catch(() => { });
-  }
 
   ui.classList.add("hide");
   message.classList.remove("show");

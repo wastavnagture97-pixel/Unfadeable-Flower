@@ -97,28 +97,6 @@ canvas {
   box-shadow: 0 30px 100px rgba(0, 0, 0, .7), inset 0 0 30px rgba(255, 40, 100, .035), 0 0 70px rgba(255, 20, 85, .08);
 }
 
-.name-input-wrap {
-  margin-bottom: 18px;
-}
-
-#custom-name {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 100, 150, 0.4);
-  border-radius: 20px;
-  padding: 9px 16px;
-  color: #fff;
-  font-family: 'Cinzel', serif;
-  text-align: center;
-  font-size: 0.9rem;
-  outline: none;
-  width: 85%;
-  transition: border-color 0.3s;
-}
-
-#custom-name:focus {
-  border-color: var(--pink);
-}
-
 .rose-symbol {
   font-size: 46px;
   line-height: 1;

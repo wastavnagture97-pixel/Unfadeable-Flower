@@ -50,7 +50,10 @@
   <div id="cursor-glow"></div>
 
   <!-- Background Track: Inaam -->
-  <audio id="bg-music" loop src="./Inaam.mp3" crossorigin="anonymous"></audio>
+  <audio id="bg-music" loop preload="auto">
+    <source src="./Inaam_2.mp3" type="audio/mpeg">
+    <source src="./Inaam.mp3" type="audio/mpeg">
+  </audio>
 
   <script type="importmap">
     {
