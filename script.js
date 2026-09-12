@@ -23,15 +23,12 @@ const replayBtn = document.getElementById("replay-btn");
 const statusText = document.getElementById("status-text");
 const soundBtn = document.getElementById("sound-btn");
 const bgMusic = document.getElementById("bg-music");
-const customNameInput = document.getElementById("custom-name");
-const displayName = document.getElementById("display-name");
 
 init();
 animate();
 
 function init() {
   scene = new THREE.Scene();
-  // Deep Velvet Purple/Black background color
   scene.background = new THREE.Color(0x0c0108);
 
   const isMobile = window.innerWidth < 600;
@@ -46,7 +43,6 @@ function init() {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
-  // Orbit Controls setup
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
@@ -91,10 +87,6 @@ function init() {
   document.getElementById("bloom-btn").addEventListener("click", startBloom);
   replayBtn.addEventListener("click", resetBloom);
   soundBtn.addEventListener("click", toggleSound);
-
-  customNameInput.addEventListener("input", (e) => {
-    displayName.textContent = e.target.value.trim() || "Tanvi";
-  });
 
   statusText.textContent = "Waiting to bloom";
 }
@@ -155,7 +147,6 @@ function createFlower() {
     new THREE.Vector3(0, 0, 0)
   ]);
 
-  // Vibrant Glowing Green Stem
   stemMesh = new THREE.Mesh(
     new THREE.TubeGeometry(stemCurve, 40, 0.065, 10, false),
     new THREE.MeshStandardMaterial({
